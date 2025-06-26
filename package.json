@@ -1,0 +1,43 @@
+{
+  "name": "api-salamin",
+  "version": "1.0.0",
+  "description": "🪞 Salamin API - Professional brand analysis backend. Compare your developer profile across GitHub, LinkedIn & Twitter against industry leaders. Built with Node.js + TypeScript + Claude AI.",
+  "main": "index.js",
+  "devDependencies": {
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@eslint/js": "9.29.0",
+    "@types/express": "5.0.3",
+    "@types/node": "24.0.3",
+    "commitizen": "4.3.1",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint": "9.29.0",
+    "globals": "16.2.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.1.2",
+    "nodemon": "3.1.10",
+    "prettier": "^3.6.1",
+    "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.35.0"
+  },
+  "scripts": {
+    "commit": "cz",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node -r tsconfig-paths/register dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}
