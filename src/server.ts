@@ -1,5 +1,6 @@
 import app from '@/app';
+import ConfigManager from './config/ConfigManager';
 
-const PORT = 3000;
+const PORT = ConfigManager.getInstance().getProperty('port');
 
 app.listen(PORT);
