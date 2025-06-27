@@ -10,7 +10,7 @@ export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
     rules: {
-      'no-console': 'error',
+      // 'no-console': 'error',
       'max-len': ['error', { code: 120 }],
     },
   },

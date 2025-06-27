@@ -5,12 +5,14 @@ import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimiter from './middleware/rateLimiter';
+import { requestLogger } from './middleware/requestLogger';
 
 const app = express();
 
 app.use(helmet());
 app.use(cors());
 app.use(compression());
+app.use(requestLogger);
 app.use(rateLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
