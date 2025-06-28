@@ -1,5 +1,5 @@
 import app from '@/app';
-import ConfigManager from './config/ConfigManager';
+import ConfigManager from './config/config-manager';
 
 const PORT = ConfigManager.getInstance().getProperty('port');
 

@@ -1,5 +1,5 @@
 import config from '@/config/config';
-import ClaudeService from '@/services/ClaudeService';
+import ClaudeService from '@/services/claude.service';
 import { AnalysisRequest } from '@/types/analysis';
 
 async function testClaude() {

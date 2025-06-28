@@ -13,7 +13,7 @@ paths:
     get:
       summary: Health check endpoint
       operationId: getHealth
-      x-eov-operation-handler: systemController
+      x-eov-operation-handler: system.controller
       tags:
         - System
       responses:
@@ -28,7 +28,7 @@ paths:
     post:
       summary: Start profile analysis
       operationId: startAnalysis
-      x-eov-operation-handler: analysisController
+      x-eov-operation-handler: analysis.controller
       tags:
         - Analysis
       requestBody:

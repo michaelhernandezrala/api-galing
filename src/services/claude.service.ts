@@ -31,18 +31,44 @@ class ClaudeService implements AIProvider {
         messages: [
           {
             role: 'user',
-            content: `Analiza este perfil de desarrollador y dame un resumen detallado:
+            content: `Analiza este perfil de desarrollador y responde ÚNICAMENTE con un JSON válido siguiendo
+esta estructura exacta:
 
-  Datos del perfil: ${JSON.stringify(request.profiles, null, 2)}
-  Objetivo: ${JSON.stringify(request.target, null, 2)}
+{
+ "totalScore": 85,
+ "averageScore": 8.5,
+ "topStrengths": ["React expert", "Active contributor", "Good documentation"],
+ "criticalWeaknesses": ["Limited backend experience", "Few contributions"],
+ "priorityActions": ["Learn Node.js", "Contribute to open source", "Build backend projects"],
+ "platformBreakdown": [
+   {
+     "platform": "github",
+     "score": {
+       "platform": "github",
+       "overall": 8,
+       "activity": 7,
+       "quality": 9,
+       "community": 6,
+       "consistency": 8
+     },
+     "strengths": ["Clean code", "Good repos"],
+     "weaknesses": ["Low activity"],
+     "recommendations": ["More frequent commits"],
+     "missingData": ["Profile bio"]
+   }
+ ]
+}
 
-  Proporciona un análisis técnico completo con fortalezas, debilidades y recomendaciones.`,
+Datos del perfil: ${JSON.stringify(request.profiles, null, 2)}
+Objetivo: ${JSON.stringify(request.target, null, 2)}
+
+IMPORTANTE: Responde SOLO con el JSON válido, sin texto adicional antes o después.`,
           },
         ],
       };
 
       const response = await this.client.post('/messages', payload);
-      return response.data;
+      return response.data.content[0].text;
     } catch (error) {
       console.log(`Claude analysis failed`, error);
       throw error;
