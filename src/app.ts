@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { openApiValidator, swaggerDocs } from '@/middleware/openapi';
+import { openApiValidator, swaggerDocs } from '@/middlewares/openapi';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import rateLimiter from './middleware/rateLimiter';
-import { requestLogger } from './middleware/requestLogger';
+import rateLimiter from './middlewares/rateLimiter';
+import { requestLogger } from './middlewares/requestLogger';
 
 const app = express();
 

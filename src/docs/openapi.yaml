@@ -3,43 +3,155 @@ info:
   title: Salamin API
   description: 🪞 Professional brand analysis API for developers
   version: 1.0.0
-  contact:
-    name: API Support
-    email: support@salamin.com
 
 servers:
   - url: http://localhost:3605/v1
     description: Development server
-  - url: https://api.salamin.com/v1
-    description: Production server
 
 paths:
   /health:
     get:
       summary: Health check endpoint
       operationId: getHealth
-      x-eov-operation-handler: system
+      x-eov-operation-handler: systemController
       tags:
         - System
       responses:
-        '200':
+        200:
           description: API is healthy
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  statusCode:
-                    type: number
-                    example: 201
-                  message:
-                    type: string
-                    example: OK
+                $ref: '#/components/schemas/HealthResponse'
+
+  /analyze:
+    post:
+      summary: Start profile analysis
+      operationId: startAnalysis
+      x-eov-operation-handler: analysisController
+      tags:
+        - Analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalysisRequest'
+      responses:
+        200:
+          description: Analysis started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartAnalysisResponse'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
-  schemas: {}
-  securitySchemes: {}
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+        version:
+          type: string
+          example: 1.0.0
+        uptime:
+          type: integer
+          example: 3600
+        checks:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [healthy, unhealthy]
+            claude:
+              type: string
+              enum: [healthy, unhealthy]
+            externalApis:
+              type: string
+              enum: [healthy, unhealthy]
+
+    AnalysisRequest:
+      type: object
+      required:
+        - profiles
+        - target
+      properties:
+        profiles:
+          type: object
+          properties:
+            github:
+              type: string
+              example: 'https://github.com/username'
+            linkedin:
+              type: string
+              example: 'https://linkedin.com/in/username'
+            twitter:
+              type: string
+              example: 'https://twitter.com/username'
+        target:
+          type: object
+          required:
+            - level
+            - stack
+            - platforms
+          properties:
+            level:
+              type: string
+              enum: [junior, mid, senior, staff, principal]
+            stack:
+              type: string
+              enum: [frontend, backend, fullstack, mobile, devops, data, ml]
+            platforms:
+              type: array
+              items:
+                type: string
+                enum: [github, linkedin, twitter, stackoverflow, medium]
+
+    StartAnalysisResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: 'Analysis started successfully'
+        data:
+          type: object
+          properties:
+            analysisId:
+              type: string
+              example: 'abc123xyz'
+            status:
+              type: string
+              example: 'started'
+            estimatedTime:
+              type: integer
+              example: 45
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: 'Invalid request data'
+        errorCode:
+          type: string
+          example: 'VALIDATION_ERROR'
 
 tags:
   - name: System
     description: System operations
+  - name: Analysis
+    description: Profile analysis operations

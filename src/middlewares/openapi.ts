@@ -5,7 +5,7 @@ import path from 'path';
 import swaggerUi, { JsonObject } from 'swagger-ui-express';
 
 const apiSpecPath = path.join(__dirname, '../docs/openapi.yaml');
-const handlersPath = path.join(__dirname, '../handlers/v1');
+const handlersPath = path.join(__dirname, '../controllers/v1');
 
 const apiSpec = yaml.load(readFileSync(apiSpecPath, 'utf8')) as JsonObject;
 
