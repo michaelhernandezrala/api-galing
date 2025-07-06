@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { Config } from '@/types/config';
+import Config from '@/types/config';
 import config from './config';
 
 class ConfigManager {
