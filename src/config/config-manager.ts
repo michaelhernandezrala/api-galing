@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import Config from '@/types/config';
+import { Config } from '@/types/config';
 import config from './config';
 
 class ConfigManager {
@@ -18,7 +18,7 @@ class ConfigManager {
     return ConfigManager.instance;
   }
 
-  public getProperty(key: string): string | number {
+  public getProperty(key: string): string | number | null | undefined | boolean {
     return _.get(this.config, key);
   }
 }
