@@ -16,13 +16,13 @@ export type ComparisonTarget = {
 export type SuccessResponse<T> = {
   statusCode: number;
   message: string;
-  data: T;
+  count?: number;
+  data?: T;
 };
 
 export type ErrorResponse = {
   statusCode: number;
   message: string;
-  errorCode?: string;
 };
 
 export type HealthData = {
