@@ -11,6 +11,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+
 import Application from './application.model';
 
 @Table({

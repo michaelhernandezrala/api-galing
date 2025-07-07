@@ -1,7 +1,10 @@
 import { FindOptions } from 'sequelize';
 
+import PLAN_FEATURES from '@/constants/plan-features';
 import sequelize from '@/lib/sequelize';
+import ApplicationFeature from '@/models/application-feature';
 import Application from '@/models/application.model';
+import Feature from '@/models/feature.model';
 import User from '@/models/user.model';
 import {
   ApplicationCreateRequest,
@@ -20,6 +23,11 @@ class ApplicationService {
 
       const userData = { applicationId: application.id, email: data.email, password: data.password, type: 'human' };
       await User.create(userData, { transaction });
+
+      const planFeatureCodes = PLAN_FEATURES.free.map(pf => pf.code);
+      const features = await Feature.findAll({ where: { code: planFeatureCodes }, transaction });
+      const applicationFeatures = features.map(feature => ({ applicationId: application.id, featureId: feature.id }));
+      await ApplicationFeature.bulkCreate(applicationFeatures, { transaction });
 
       return application.get({ plain: true });
     });
