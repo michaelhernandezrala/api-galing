@@ -4,16 +4,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '@/types/api';
 
 class ResponseHelper {
-  private static instance: ResponseHelper;
-
-  private constructor() {}
-
-  public static getInstance(): ResponseHelper {
-    if (!ResponseHelper.instance) {
-      ResponseHelper.instance = new ResponseHelper();
-    }
-    return ResponseHelper.instance;
-  }
+  public constructor() {}
 
   public ok<T>(res: Response, data?: T, count?: number): void {
     this.sendSuccessResponse(res, StatusCodes.OK, ReasonPhrases.OK, data, count);
@@ -86,4 +77,4 @@ class ResponseHelper {
   }
 }
 
-export default ResponseHelper;
+export default new ResponseHelper();

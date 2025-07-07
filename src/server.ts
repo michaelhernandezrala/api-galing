@@ -1,10 +1,9 @@
 import app from '@/app';
-import ConfigManager from './config/config-manager';
-import Logger from './utils/logger';
+import config from './config/config';
+import logger from './utils/logger';
 
-const PORT = ConfigManager.getInstance().getProperty('port');
+const PORT = config.port;
 
 app.listen(PORT, () => {
-  const logger: Logger = Logger.getInstance();
   logger.info({ message: 'Server started successfully', port: PORT });
 });

@@ -8,6 +8,16 @@ const config: Config = {
   logger: {
     level: process.env['LOG_LEVEL'] ?? 'info',
   },
+  databases: {
+    sequelize: {
+      host: process.env['DB_HOST'] ?? '',
+      port: Number.parseInt(process.env['DB_PORT'] ?? '5432'),
+      username: process.env['DB_USERNAME'] ?? '',
+      password: process.env['DB_PASSWORD'] ?? '',
+      database: process.env['DB_NAME'] ?? '',
+      logging: false,
+    },
+  },
   models: {
     claude: {
       anthropicVersion: process.env['CLAUDE_ANTHROPIC_VERSION'] ?? '2023-06-01',

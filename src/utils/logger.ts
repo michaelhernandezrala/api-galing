@@ -1,17 +1,13 @@
+import config from '@/config/config';
 import winston, { format, transports } from 'winston';
 import { consoleFormat } from 'winston-console-format';
 
-import ConfigManager from '@/config/config-manager';
-
 class Logger {
-  private static instance: Logger;
   private client: winston.Logger;
 
-  private constructor() {
-    const configManager = ConfigManager.getInstance();
-
+  public constructor() {
     this.client = winston.createLogger({
-      level: configManager.getProperty('logger.level') as string,
+      level: config.logger.level,
       format: this.getFormatConfig(),
       transports: this.getTransportsConfig(),
     });
@@ -49,13 +45,6 @@ class Logger {
     ];
   }
 
-  public static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
-
   info<T>(message: T): void {
     this.client.info({ ...message });
   }
@@ -73,4 +62,4 @@ class Logger {
   }
 }
 
-export default Logger;
+export default new Logger();
