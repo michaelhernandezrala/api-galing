@@ -1,14 +1,12 @@
-import { Column, CreatedAt, DataType, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 
 @Table({
   tableName: 'features',
 })
 class Feature extends Model {
   @PrimaryKey
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   override id!: string;
 
   @CreatedAt
@@ -27,9 +25,9 @@ class Feature extends Model {
 
   @Column({
     type: DataType.TEXT,
-    allowNull: true,
+    allowNull: false,
   })
-  description?: string;
+  description!: string;
 }
 
 export default Feature;

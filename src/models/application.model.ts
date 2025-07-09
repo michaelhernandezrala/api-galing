@@ -1,4 +1,15 @@
-import { Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import {
+  Column,
+  CreatedAt,
+  DataType,
+  Default,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+} from 'sequelize-typescript';
+import ApplicationFeature from './application-feature';
 
 @Table({
   tableName: 'applications',
@@ -39,6 +50,9 @@ class Application extends Model {
     allowNull: false,
   })
   plan!: 'free' | 'pro' | 'premium';
+
+  @HasMany(() => ApplicationFeature)
+  applicationFeatures!: ApplicationFeature[];
 }
 
 export default Application;

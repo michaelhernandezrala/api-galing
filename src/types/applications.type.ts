@@ -12,16 +12,18 @@ export type ApplicationUpdateRequest = {
 
 type ApplicationPlan = 'free' | 'pro' | 'premium';
 
+export type FeatureData = {
+  code: string;
+  description: string;
+};
+
 export type ApplicationData = {
   id: string;
   name: string;
-  description?: string;
+  description: string | null;
   enabled: boolean;
   plan: ApplicationPlan;
+  features: FeatureData[] | [];
   createdAt: Date;
   updatedAt: Date;
-};
-
-export type ApplicationFilters = {
-  id?: string;
 };

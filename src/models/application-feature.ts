@@ -1,4 +1,5 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
@@ -49,6 +50,12 @@ class ApplicationFeature extends Model {
   @Default(true)
   @Column(DataType.BOOLEAN)
   enabled!: boolean;
+
+  @BelongsTo(() => Application)
+  application!: Application;
+
+  @BelongsTo(() => Feature)
+  feature!: Feature;
 }
 
 export default ApplicationFeature;

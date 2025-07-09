@@ -28,7 +28,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 export const getById = async (req: Request, res: Response): Promise<void> => {
   const { appId } = req.params;
 
-  const response = await applicationService.getOne({ id: appId! }, { raw: true });
+  const response = await applicationService.getById(appId!);
   if (!response) {
     responseHelper.notFound(res);
     return;
@@ -41,25 +41,25 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   const { appId } = req.params;
   const payload: ApplicationUpdateRequest = req.body;
 
-  const application = await applicationService.getOne({ id: appId! }, { raw: true });
+  const application = await applicationService.getById(appId!);
   if (!application) {
     responseHelper.notFound(res);
     return;
   }
 
-  const response = await applicationService.update({ id: appId! }, payload);
+  const response = await applicationService.update(appId!, payload);
   responseHelper.ok(res, response);
 };
 
 export const destroy = async (req: Request, res: Response): Promise<void> => {
   const { appId } = req.params;
 
-  const application = await applicationService.getOne({ id: appId! }, { raw: true });
+  const application = await applicationService.getById(appId!);
   if (!application) {
     responseHelper.notFound(res);
     return;
   }
 
-  await applicationService.destroy({ id: appId! });
+  await applicationService.destroy(appId!);
   responseHelper.noContent(res);
 };

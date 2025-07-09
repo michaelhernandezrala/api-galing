@@ -1,17 +1,10 @@
-import { FindOptions } from 'sequelize';
-
 import PLAN_FEATURES from '@/constants/plan-features';
 import sequelize from '@/lib/sequelize';
 import ApplicationFeature from '@/models/application-feature';
 import Application from '@/models/application.model';
 import Feature from '@/models/feature.model';
 import User from '@/models/user.model';
-import {
-  ApplicationCreateRequest,
-  ApplicationData,
-  ApplicationFilters,
-  ApplicationUpdateRequest,
-} from '@/types/applications.type';
+import { ApplicationCreateRequest, ApplicationData, ApplicationUpdateRequest } from '@/types/applications.type';
 
 class ApplicationService {
   public constructor() {}
@@ -33,13 +26,44 @@ class ApplicationService {
     });
   }
 
-  public async getOne(filters: ApplicationFilters, params: FindOptions = {}): Promise<ApplicationData | null> {
-    return Application.findOne({ where: { ...filters }, ...params });
+  public async getById(id: string): Promise<ApplicationData | null> {
+    const application = await Application.findOne({
+      where: { id },
+      include: [
+        {
+          model: ApplicationFeature,
+          include: [
+            {
+              model: Feature,
+              attributes: ['code', 'description'],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!application) {
+      return null;
+    }
+
+    return {
+      id: application.id,
+      name: application.name,
+      description: application?.description ?? null,
+      enabled: application.enabled,
+      plan: application.plan,
+      createdAt: application.createdAt,
+      updatedAt: application.updatedAt,
+      features: application.applicationFeatures.map(af => ({
+        code: af.feature.code,
+        description: af.feature.description,
+      })),
+    };
   }
 
-  public async update(filters: ApplicationFilters, data: ApplicationUpdateRequest): Promise<ApplicationData | null> {
+  public async update(id: string, data: ApplicationUpdateRequest): Promise<ApplicationData | null> {
     const [affectedCount, affectedRows] = await Application.update(data, {
-      where: { ...filters },
+      where: { id },
       returning: true,
     });
 
@@ -50,8 +74,8 @@ class ApplicationService {
     return affectedRows[0].get({ plain: true });
   }
 
-  public async destroy(filters: ApplicationFilters): Promise<void> {
-    await Application.destroy({ where: { ...filters } });
+  public async destroy(id: string): Promise<void> {
+    await Application.destroy({ where: { id } });
   }
 }
 
