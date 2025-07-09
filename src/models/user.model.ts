@@ -1,4 +1,7 @@
+import IsEmail from 'isemail';
 import {
+  AfterCreate,
+  AfterFind,
   BeforeCreate,
   BeforeUpdate,
   Column,
@@ -81,12 +84,32 @@ class User extends Model {
       if (!instance.email || !instance.password) {
         throw new Error('Email and password are required for human users');
       }
+
+      if (!IsEmail.validate(instance.email)) {
+        throw new Error('Please provide a valid email address');
+      }
     }
     if (instance.type === 'server') {
       if (!instance.serverKey) {
         throw new Error('Server key is required for server users');
       }
     }
+  }
+
+  @AfterCreate
+  @AfterFind
+  static removePassword(instance: User | User[] | null) {
+    if (!instance) return;
+
+    const users = Array.isArray(instance) ? instance : [instance];
+
+    users.forEach(user => {
+      if (user && user.dataValues) {
+        if (user.password) {
+          delete user.dataValues.password;
+        }
+      }
+    });
   }
 }
 

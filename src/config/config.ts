@@ -8,6 +8,9 @@ const config: Config = {
   logger: {
     level: process.env['LOG_LEVEL'] ?? 'info',
   },
+  crypto: {
+    saltRounds: Number.parseInt(process.env['CRYPTO_SALT_ROUNDS'] ?? '10'),
+  },
   databases: {
     sequelize: {
       host: process.env['DB_HOST'] ?? '',

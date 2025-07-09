@@ -4,6 +4,9 @@ type Config = {
   logger: {
     level: string;
   };
+  crypto: {
+    saltRounds: number;
+  };
   databases: {
     sequelize: {
       host: string;

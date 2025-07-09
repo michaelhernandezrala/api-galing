@@ -1,6 +1,6 @@
 export type ApplicationCreateRequest = {
   name: string;
-  description?: string;
+  description?: string | null;
   email: string;
   password: string;
 };
