@@ -99,3 +99,23 @@ export const update = async (req: Request, res: Response) => {
   const response = await userService.update(filters, payload);
   responseHelper.ok(res, response);
 };
+
+export const destroy = async (req: Request, res: Response) => {
+  const { appId, userId } = req.params;
+
+  const application = await applicationService.getById(appId!);
+  if (!application) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  const user = await userService.getOne({ id: userId! }, { raw: true });
+  if (!user) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  const filters = { applicationId: appId!, id: userId! };
+  await userService.destroy(filters);
+  responseHelper.noContent(res);
+};

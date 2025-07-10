@@ -50,6 +50,10 @@ class UserService {
 
     return affectedRows[0].get({ plain: true });
   }
+
+  public async destroy(filters: UserFilters): Promise<void> {
+    await User.destroy({ where: { ...filters } });
+  }
 }
 
 export default new UserService();

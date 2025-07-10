@@ -490,6 +490,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - users
+      summary: Delete user
+      description: Delete an existing user permanently from an application
+      x-eov-operation-handler: users.controller
+      operationId: destroy
+      parameters:
+        - in: path
+          name: appId
+          description: Unique identifier of the application
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '550e8400-e29b-41d4-a716-446655440000'
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '660e8400-e29b-41d4-a716-446655440001'
+      responses:
+        200:
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    default: 200
+                  message:
+                    type: string
+                    default: OK
+        404:
+          description: User or application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        400:
+          description: Invalid user ID or application ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /analyze:
     post:
