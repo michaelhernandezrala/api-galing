@@ -1,7 +1,7 @@
 import { FindOptions, Op, Order } from 'sequelize';
 
 import User from '@/models/user.model';
-import { UserCreateRequest, UserData, UserDataList, UserFilters } from '@/types/users.type';
+import { UserCreateRequest, UserData, UserDataList, UserFilters, UserUpdateRequest } from '@/types/users.type';
 
 class UserService {
   public constructor() {}
@@ -36,6 +36,19 @@ class UserService {
       distinct: true,
       ...params,
     });
+  }
+
+  public async update(filters: UserFilters, data: UserUpdateRequest): Promise<UserData | null> {
+    const [affectedCount, affectedRows] = await User.update(data, {
+      where: { ...filters },
+      returning: true,
+    });
+
+    if (affectedCount === 0 || !affectedRows?.[0]) {
+      return null;
+    }
+
+    return affectedRows[0].get({ plain: true });
   }
 }
 

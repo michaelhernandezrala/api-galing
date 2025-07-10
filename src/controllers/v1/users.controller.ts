@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import applicationService from '@/services/application.service';
 import userService from '@/services/user.service';
-import { UserCreateRequest } from '@/types/users.type';
+import { UserCreateRequest, UserUpdateRequest } from '@/types/users.type';
 import cryptoHelper from '@/utils/crypto-helper';
 import responseHelper from '@/utils/response-helper';
 
@@ -58,7 +58,6 @@ export const getUsers = async (req: Request, res: Response) => {
 
   filters['id'] = appId;
   const response = await userService.getAllAndCount(filters, { raw: true });
-  console.log(response);
   responseHelper.ok(res, response.rows, response.count);
 };
 
@@ -78,4 +77,25 @@ export const getById = async (req: Request, res: Response) => {
   }
 
   responseHelper.ok(res, user);
+};
+
+export const update = async (req: Request, res: Response) => {
+  const { appId, userId } = req.params;
+  const payload: UserUpdateRequest = req.body;
+
+  const application = await applicationService.getById(appId!);
+  if (!application) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  const user = await userService.getOne({ id: userId! }, { raw: true });
+  if (!user) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  const filters = { applicationId: appId!, id: userId! };
+  const response = await userService.update(filters, payload);
+  responseHelper.ok(res, response);
 };

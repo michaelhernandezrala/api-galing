@@ -11,6 +11,11 @@ export type UserCreateRequest = {
   updatedAt: Date;
 };
 
+export type UserUpdateRequest = {
+  name?: string | null;
+  enabled?: boolean;
+};
+
 export type UserData = {
   id: string;
   applicationId: string;

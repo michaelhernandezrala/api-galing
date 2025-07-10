@@ -417,6 +417,79 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - users
+      summary: Update user
+      description: Update an existing user's information within an application
+      x-eov-operation-handler: users.controller
+      operationId: update
+      parameters:
+        - in: path
+          name: appId
+          description: Unique identifier of the application
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '550e8400-e29b-41d4-a716-446655440000'
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '660e8400-e29b-41d4-a716-446655440001'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: User's full name
+                  example: 'John Updated Doe'
+                enabled:
+                  type: boolean
+                  description: Whether the user account is active
+                  example: true
+      responses:
+        200:
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    default: 200
+                  message:
+                    type: string
+                    default: OK
+                  data:
+                    $ref: '#/components/schemas/User'
+        400:
+          description: Invalid request data or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: User or application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        409:
+          description: Email already exists for another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /analyze:
     post:
