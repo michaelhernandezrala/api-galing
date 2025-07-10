@@ -364,6 +364,60 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /apps/{appId}/users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      description: Retrieve a specific user by their unique identifier within an application
+      x-eov-operation-handler: users.controller
+      operationId: getById
+      parameters:
+        - in: path
+          name: appId
+          description: Unique identifier of the application
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '550e8400-e29b-41d4-a716-446655440000'
+        - in: path
+          name: userId
+          description: Unique identifier of the user
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '660e8400-e29b-41d4-a716-446655440001'
+      responses:
+        200:
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    default: 200
+                  message:
+                    type: string
+                    default: OK
+                  data:
+                    $ref: '#/components/schemas/User'
+        404:
+          description: User or application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        400:
+          description: Invalid user ID or application ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /analyze:
     post:
       summary: Start profile analysis

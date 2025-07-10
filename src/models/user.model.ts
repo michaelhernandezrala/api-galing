@@ -102,11 +102,12 @@ class User extends Model {
     if (!instance) return;
 
     const users = Array.isArray(instance) ? instance : [instance];
+    console.log(users);
 
     users.forEach(user => {
-      if (user && user.dataValues) {
+      if (user) {
         if (user.password) {
-          delete user.dataValues.password;
+          delete user.password;
         }
       }
     });

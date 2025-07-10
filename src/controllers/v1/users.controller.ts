@@ -61,3 +61,21 @@ export const getUsers = async (req: Request, res: Response) => {
   console.log(response);
   responseHelper.ok(res, response.rows, response.count);
 };
+
+export const getById = async (req: Request, res: Response) => {
+  const { appId, userId } = req.params;
+
+  const application = await applicationService.getById(appId!);
+  if (!application) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  const user = await userService.getOne({ id: userId! }, { raw: true });
+  if (!user) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  responseHelper.ok(res, user);
+};
