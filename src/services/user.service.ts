@@ -1,7 +1,7 @@
-import { FindOptions } from 'sequelize';
+import { FindOptions, Op, Order } from 'sequelize';
 
 import User from '@/models/user.model';
-import { UserCreateRequest, UserData, UserFilters } from '@/types/users.type';
+import { UserCreateRequest, UserData, UserDataList, UserFilters } from '@/types/users.type';
 
 class UserService {
   public constructor() {}
@@ -13,6 +13,29 @@ class UserService {
 
   public async getOne(filters: UserFilters, params: FindOptions = {}): Promise<UserData | null> {
     return User.findOne({ where: { ...filters }, ...params });
+  }
+
+  public async getAllAndCount(filters: UserFilters, params: FindOptions = {}): Promise<UserDataList> {
+    const { id, limit = 10, page = 1, find, order = 'desc' } = filters;
+    const offset = (page - 1) * limit;
+    const orderBy: Order = [['createdAt', order.toUpperCase() as 'ASC' | 'DESC']];
+
+    const whereConditions =
+      find && find.trim()
+        ? {
+            applicationId: id,
+            [Op.or]: [{ name: { [Op.iLike]: `%${find.trim()}%` } }, { email: { [Op.iLike]: `%${find.trim()}%` } }],
+          }
+        : { applicationId: id };
+
+    return User.findAndCountAll({
+      where: whereConditions,
+      limit,
+      offset,
+      order: orderBy,
+      distinct: true,
+      ...params,
+    });
   }
 }
 

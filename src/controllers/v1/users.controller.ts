@@ -45,3 +45,19 @@ const _formatUserCreateRequest = async (data: UserCreateRequest): Promise<UserCr
     serverKey: uuidv4(),
   };
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  const { appId } = req.params;
+  const filters = req.query;
+
+  const application = await applicationService.getById(appId!);
+  if (!application) {
+    responseHelper.notFound(res);
+    return;
+  }
+
+  filters['id'] = appId;
+  const response = await userService.getAllAndCount(filters, { raw: true });
+  console.log(response);
+  responseHelper.ok(res, response.rows, response.count);
+};

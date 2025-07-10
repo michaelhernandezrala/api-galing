@@ -281,6 +281,88 @@ paths:
                     default: Created
                   data:
                     $ref: '#/components/schemas/User'
+    get:
+      tags:
+        - users
+      summary: Get users for application
+      description: Retrieve a paginated list of users for a specific application with filtering and sorting options
+      x-eov-operation-handler: users.controller
+      operationId: getUsers
+      parameters:
+        - in: path
+          name: appId
+          description: Unique identifier of the application
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: '550e8400-e29b-41d4-a716-446655440000'
+        - in: query
+          name: limit
+          description: Number of users to return per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          example: 10
+        - in: query
+          name: page
+          description: Page number for pagination (1-based)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          example: 1
+        - in: query
+          name: order
+          description: Sort order for the results
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          example: desc
+        - in: query
+          name: find
+          description: Search term to filter users by name or email
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+          example: 'john'
+      responses:
+        200:
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    default: 200
+                  message:
+                    type: string
+                    default: OK
+                  count:
+                    type: number
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        400:
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /analyze:
     post:
@@ -371,9 +453,14 @@ components:
           type: string
           format: uuid
           example: '550e8400-e29b-41d4-a716-446655440000'
+        applicationId:
+          type: string
+          format: uuid
+          example: '550e8400-e29b-41d4-a716-446655440000'
         name:
           type: string
           example: 'John Doe'
+          nullable: true
         email:
           type: string
           example: 'john@example.com'
@@ -382,10 +469,14 @@ components:
           type: string
           enum: [human, server]
           example: 'human'
+        serverKey:
+          type: string
+          example: 'ed8677e0-c31c-491d-a2e7-2c6616b68f26'
+          nullable: true
         enabled:
           type: boolean
           example: true
-        ccreatedAt:
+        createdAt:
           type: string
           format: date-time
           description: Timestamp when the user was created

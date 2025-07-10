@@ -24,7 +24,16 @@ export type UserData = {
   updatedAt: Date;
 };
 
+export type UserDataList = {
+  count: number;
+  rows: UserData[];
+};
+
 export type UserFilters = {
   id?: string;
   email?: string;
+  limit?: number;
+  page?: number;
+  order?: 'asc' | 'desc';
+  find?: string;
 };
