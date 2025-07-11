@@ -15,7 +15,13 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 
+import { FindOptions } from 'sequelize';
+
 import Application from './application.model';
+
+export interface FindOptionsWithPassword extends FindOptions {
+  includePassword?: boolean;
+}
 
 @Table({
   tableName: 'users',
@@ -98,8 +104,12 @@ class User extends Model {
 
   @AfterCreate
   @AfterFind
-  static removePassword(instance: User | User[] | null) {
+  static removePassword(instance: User | User[] | null, options: FindOptionsWithPassword) {
     if (!instance) return;
+
+    if (options && options.includePassword) {
+      return;
+    }
 
     const users = Array.isArray(instance) ? instance : [instance];
     console.log(users);

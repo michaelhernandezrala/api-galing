@@ -10,6 +10,8 @@ const config: Config = {
   },
   crypto: {
     saltRounds: Number.parseInt(process.env['CRYPTO_SALT_ROUNDS'] ?? '10'),
+    secret: process.env['CRYPTO_SECRET_KEY'] ?? '',
+    refreshSecret: process.env['CRYPTO_REFRESH_SECRET_KEY'] ?? '',
   },
   databases: {
     sequelize: {

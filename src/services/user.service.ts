@@ -1,6 +1,6 @@
 import { FindOptions, Op, Order } from 'sequelize';
 
-import User from '@/models/user.model';
+import User, { FindOptionsWithPassword } from '@/models/user.model';
 import { UserCreateRequest, UserData, UserDataList, UserFilters, UserUpdateRequest } from '@/types/users.type';
 
 class UserService {
@@ -11,7 +11,7 @@ class UserService {
     return user.get({ plain: true });
   }
 
-  public async getOne(filters: UserFilters, params: FindOptions = {}): Promise<UserData | null> {
+  public async getOne(filters: UserFilters, params: FindOptionsWithPassword = {}): Promise<UserData | null> {
     return User.findOne({ where: { ...filters }, ...params });
   }
 

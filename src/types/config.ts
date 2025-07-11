@@ -6,6 +6,8 @@ type Config = {
   };
   crypto: {
     saltRounds: number;
+    secret: string;
+    refreshSecret: string;
   };
   databases: {
     sequelize: {

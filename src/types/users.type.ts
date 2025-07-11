@@ -36,6 +36,7 @@ export type UserDataList = {
 
 export type UserFilters = {
   id?: string;
+  applicationId?: string;
   email?: string;
   limit?: number;
   page?: number;
